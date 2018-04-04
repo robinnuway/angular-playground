@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>AngularJS playground</title>
+  <script src="https://use.fontawesome.com/3f116dc76b.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+
+  <body ng-app='app' ng-controller='toggleMenuController'>
+  <aside class='modal' ng-class="{'active': isModalOpen}">
+    <div class='modal_content'>
+      <ul class='modal_content__close' ng-click='closeModal()'>
+        <li></li>
+      </ul>
+      <div class='modal_content__inner'></div>
+    </div>
+  </aside>
+  <div class='loader'>
+    <div class='loader_circle'></div>
+  </div>
+  <div class='site-inner' ng-class="{'slide' : isActive}" ng-click='closeMenu()'>
+    <section class='hero'>
+      <header class='hero_inner container'>
+        <form class='input-form' name='form' ng-controller='randomUserController' ng-model-options="{updateOn: 'blur', '*': '$inherit'}" novalidate='novalidate'>
+          <div class='flex-row' ng-controller='tabsController'>
+            <div class='item-md-3 item-sm-8 item-xs-12' ng-show='isSet(1)'>
+              <span>Login</span>
+              <div class='input-group'>
+                <input class='input-group_field' id='loginemail' name='name' ng-model-options="{updateOn: 'default blur'}" ng-model='user.email' required='required' type='email'>
+                <label class='input-group_label' for='loginemail'>E-mail</label>
+                <div class='input-group_error' ng-show='form.$submitted || form.email.$touched'>
+                  <span ng-show='form.email.$error.required'>Please, type in your email</span>
+                  <span ng-show='form.email.$error.email'>Not a valid email address</span>
+                </div>
+              </div>
+              <div class='input-group'>
+                <input class='input-group_field' id='loginpassword' name='name' ng-model-options="{updateOn: 'default blur'}" ng-model='user.password' required='required' type='password'>
+                <label class='input-group_label' for='loginpassword'>Password</label>
+                <div class='input-group_error' ng-show='form.$submitted || form.password.$touched'>
+                  <span ng-show='form.password.$error.required'>Please, type in your password</span>
+                </div>
+              </div>
+              <button class='button' type='submit'>Login</button>
+              <a class='float-right' href='#' ng-class='{ active: isSet(2) }' ng-click='setTab(2)'>Not a member?</a>
+            </div>
+            <div class='item-md-3 item-sm-8 item-xs-12' ng-show='isSet(2)'>
+              <span>Sign up</span>
+              <div class='input-group'>
+                <input class='input-group_field' id='name' name='name' ng-model-options="{updateOn: 'default blur'}" ng-model='user.name' required='required' type='text'>
+                <label class='input-group_label' for='name'>First- & lastname</label>
+                <div class='input-group_error' ng-show='form.$submitted || form.name.$touched'>
+                  <span ng-show='form.name.$error.required'>Please, fill in your names</span>
+                </div>
+              </div>
+              <div class='input-group'>
+                <input class='input-group_field' id='email' name='email' ng-model-options="{updateOn: 'default blur'}" ng-model='user.email' required='required' type='email'>
+                <label class='input-group_label' for='email'>E-mail</label>
+                <div class='input-group_error' ng-show='form.$submitted || form.email.$touched'>
+                  <span ng-show='form.email.$error.required'>Please, fill in your email</span>
+                  <span ng-show='form.email.$error.email'>Not a valid email address</span>
+                </div>
+              </div>
+              <div class='input-group'>
+                <input class='input-group_field' id='password' name='password' ng-minlength='8' ng-model-options="{updateOn: 'default blur'}" ng-model='user.password' required='required' type='password'>
+                <label class='input-group_label' for='password'>Password</label>
+                <div class='input-group_error' ng-show='form.$submitted || form.password.$touched'>
+                  <span ng-show='form.password.$error.required'>Please, choose a password</span>
+                  <span ng-show='form.password.$error.minlength'>Password is too short</span>
+                </div>
+              </div>
+              <div class='switch_group switch_group_transparent' data-label='Accept terms'>
+                <input id='acceptterms' name='terms' ng-model='user.terms' required='required' type='checkbox'>
+                <label for='acceptterms' ng-checked='user.terms'></label>
+              </div>
+              <div class='input-group'>
+                <div class='input-group_error' ng-class="{'ng-hide' : user.terms == true}" ng-show='form.$submitted || forms.terms.$touched'>
+                  <span ng-show='form.terms.$error.required'>Please, accept our terms</span>
+                </div>
+              </div>
+              <button class='button' ng-class="{'button_pink' : form.$invalid}" ng-click='update(user)' type='submit'>
+                <i class='fa fa-close' ng-if='form.$invalid'></i>
+                <i class='fa fa-check' ng-if='form.$valid'></i>
+                Sign up
+              </button>
+              <a class='float-right' href='#' ng-class='{ active: isSet(1) }' ng-click='setTab(1)'>Already a member?</a>
+            </div>
+          </div>
+        </form>
+      </header>
+    </section>
+    <section class='container air' ng-controller='randomUserController'>
+      <div class='layer'>
+        <div class='flex-row air-top'>
+          <div class='item-md-6 item-sm-12 item-xs-12'>
+            <div class='slider_tooltip slider_tooltip__reversed'>
+              {{range.min}} - {{range.max}} age
+            </div>
+            <slider class='slider slider_reversed' config='config' max='range.max' min='range.min' step='step'></slider>
+          </div>
+        </div>
+        <div class='flex-row air-top'>
+          <div class='item-md-6 item-sm-12 item-xs-12'>
+            <div class='accordion' ng-class="{'active' : isActive}" ng-controller='accordionController'>
+              <header class='accordion_header' ng-click='accordionActive()'>Gender {{user.gender}}</header>
+              <div class='accordion_body' ng-class="{'active' : isActive}">
+                <div class='radio_group radio_group_transparent' data-label='All genders'>
+                  <input id='gender' name='gender' ng-click='update()' ng-model='user.gender' type='radio' value=''>
+                  <label for='gender'></label>
+                </div>
+                <div class='radio_group radio_group_transparent' data-label='Men'>
+                  <input id='male' name='gender' ng-click='update()' ng-model='user.gender' type='radio' value='male'>
+                  <label for='male'></label>
+                </div>
+                <div class='radio_group radio_group_transparent' data-label='Women'>
+                  <input id='female' name='gender' ng-click='update()' ng-model='user.gender' type='radio' value='female'>
+                  <label for='female'></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='item-md-6 item-sm-12 item-xs-12'>
+            <div class='accordion' ng-class="{'active' : isActive}" ng-controller='accordionController'>
+              <header class='accordion_header' ng-click='accordionActive()'>Nationality {{user.nat}}</header>
+              <div class='accordion_body' ng-class="{'active' : isActive}">
+                <div class='radio_group radio_group_transparent' data-label='All nations'>
+                  <input id='nat' name='nat' ng-click='update()' ng-model='user.nat' type='radio' value=''>
+                  <label for='nat'></label>
+                </div>
+                <div class='radio_group radio_group_transparent' data-label='United States'>
+                  <input id='us' name='nat' ng-click='update()' ng-model='user.nat' type='radio' value='us'>
+                  <label for='us'></label>
+                </div>
+                <div class='radio_group radio_group_transparent' data-label='Great Britain'>
+                  <input id='gb' name='nat' ng-click='update()' ng-model='user.nat' type='radio' value='gb'>
+                  <label for='gb'></label>
+                </div>
+                <div class='radio_group radio_group_transparent' data-label='Denmark'>
+                  <input id='dk' name='nat' ng-click='update()' ng-model='user.nat' type='radio' value='dk'>
+                  <label for='dk'></label>
+                </div>
+                <div class='radio_group radio_group_transparent' data-label='Finland'>
+                  <input id='fi' name='nat' ng-click='update()' ng-model='user.nat' type='radio' value='fi'>
+                  <label for='fi'></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='flex-row' ng-if='$index % 4 == 0' ng-repeat='user in users'>
+          <div class='item-md-3 item-sm-12 item-xs-12'>
+            <div class='user-card' style="background-image:url('{{users[$index].picture.large}}')">
+              <div class='user-card_img' style="background-image:url('{{users[$index].picture.large}}')">
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_male' : users[$index].gender == 'male'}" ng-if="users[$index].gender == 'male'">
+                  <i class='fa fa-male'></i>
+                </span>
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_female' : users[$index].gender == 'female'}" ng-if="users[$index].gender == 'female'">
+                  <i class='fa fa-female'></i>
+                </span>
+              </div>
+              <header class='user-card_header'>
+                {{users[$index].name.first}} {{users[$index].name.last}}
+              </header>
+              <ul class='user-card_desc'>
+                <li data-user-card-desc='Nationality'>
+                  {{users[$index].nat}}
+                </li>
+                <li data-user-card-desc='City'>{{users[$index].location.city}}</li>
+                <li data-user-card-desc='Age'>
+                  {{users[$index].dob | agefilter}}
+                  {{user.civilstatus}}
+                </li>
+              </ul>
+              <div class='user-card_bottom'>
+                <div class='flex-row'>
+                  <div class='item-md-12 item-sm-12 item-xs-12'>
+                    <button class='button' ng-class="{'active' : isModalOpen}" ng-click='modalActive()'>
+                      Say hello
+                      <i class='fa fa-heart'></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='item-md-3 item-sm-12 item-xs-12'>
+            <div class='user-card' style="background-image:url('{{users[$index + 1].picture.large}}')">
+              <div class='user-card_img' style="background-image:url('{{users[$index + 1].picture.large}}')">
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_male' : users[$index + 1].gender == 'male'}" ng-if="users[$index + 1].gender == 'male'">
+                  <i class='fa fa-male'></i>
+                </span>
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_female' : users[$index + 1].gender == 'female'}" ng-if="users[$index + 1].gender == 'female'">
+                  <i class='fa fa-female'></i>
+                </span>
+              </div>
+              <header class='user-card_header'>
+                {{users[$index + 1].name.first}} {{users[$index + 1].name.last}}
+              </header>
+              <ul class='user-card_desc'>
+                <li data-user-card-desc='Nationality'>
+                  {{users[$index + 1].nat}}
+                </li>
+                <li data-user-card-desc='City'>{{users[$index + 1].location.city}}</li>
+                <li data-user-card-desc='Age'>
+                  {{users[$index + 1].dob | agefilter}}
+                  {{user.civilstatus}}
+                </li>
+              </ul>
+              <div class='user-card_bottom'>
+                <div class='flex-row'>
+                  <div class='item-md-12 item-sm-12 item-xs-12'>
+                    <button class='button' ng-class="{'active' : isModalOpen}" ng-click='modalActive()'>
+                      Say hello
+                      <i class='fa fa-heart'></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='item-md-3 item-sm-12 item-xs-12'>
+            <div class='user-card' style="background-image:url('{{users[$index + 2].picture.large}}')">
+              <div class='user-card_img' style="background-image:url('{{users[$index + 2].picture.large}}')">
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_male' : users[$index + 2].gender == 'male'}" ng-if="users[$index + 2].gender == 'male'">
+                  <i class='fa fa-male'></i>
+                </span>
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_female' : users[$index + 2].gender == 'female'}" ng-if="users[$index + 2].gender == 'female'">
+                  <i class='fa fa-female'></i>
+                </span>
+              </div>
+              <header class='user-card_header'>
+                {{users[$index + 2].name.first}} {{users[$index + 2].name.last}}
+              </header>
+              <ul class='user-card_desc'>
+                <li data-user-card-desc='Nationality'>
+                  {{users[$index + 2].nat}}
+                </li>
+                <li data-user-card-desc='City'>{{users[$index + 2].location.city}}</li>
+                <li data-user-card-desc='Age'>
+                  {{users[$index + 2].dob | agefilter}}
+                  {{user.civilstatus}}
+                </li>
+              </ul>
+              <div class='user-card_bottom'>
+                <div class='flex-row'>
+                  <div class='item-md-12 item-sm-12 item-xs-12'>
+                    <button class='button' ng-class="{'active' : isModalOpen}" ng-click='modalActive()'>
+                      Say hello
+                      <i class='fa fa-heart'></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='item-md-3 item-sm-12 item-xs-12'>
+            <div class='user-card' style="background-image:url('{{users[$index + 3].picture.large}}')">
+              <div class='user-card_img' style="background-image:url('{{users[$index + 3].picture.large}}')">
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_male' : users[$index + 3].gender == 'male'}" ng-if="users[$index + 3].gender == 'male'">
+                  <i class='fa fa-male'></i>
+                </span>
+                <span class='user-card_img__icon' ng-class="{'user-card_img__icon_female' : users[$index + 3].gender == 'female'}" ng-if="users[$index + 3].gender == 'female'">
+                  <i class='fa fa-female'></i>
+                </span>
+              </div>
+              <header class='user-card_header'>
+                {{users[$index + 3].name.first}} {{users[$index + 3].name.last}}
+              </header>
+              <ul class='user-card_desc'>
+                <li data-user-card-desc='Nationality'>
+                  {{users[$index + 3].nat}}
+                </li>
+                <li data-user-card-desc='City'>{{users[$index + 3].location.city}}</li>
+                <li data-user-card-desc='Age'>
+                  {{users[$index + 3].dob | agefilter}}
+                  {{user.civilstatus}}
+                </li>
+              </ul>
+              <div class='user-card_bottom'>
+                <div class='flex-row'>
+                  <div class='item-md-12 item-sm-12 item-xs-12'>
+                    <button class='button' ng-class="{'active' : isModalOpen}" ng-click='modalActive()'>
+                      Say hello
+                      <i class='fa fa-heart'></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='flex-row'>
+          <div class='item-md-4 item-md-offset-4 item-sm-6 item-sm-offset-3 item-xs-12'>
+            <button class='button' ng-click='loadMore(users[$index])'>
+              <i class='fa fa-random'></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <nav class='navigation' ng-class="{'scroll': toggleClass}" scroll>
+    <ul class='navigation_list' ng-class="{'active': isActive}" ng-click='menuActive()'>
+      <li></li>
+    </ul>
+    <div class='navigation_logotype'>meet</div>
+  </nav>
+  <aside class='menu' ng-class="{'active': isActive}" ng-controller='tabsController'>
+    <ul class='menu_list'>
+      <li ng-class='{ active: isSet(1) }' ng-click='setTab(1)'>
+        <a ng-class='{ active: isSet(1) }'>
+          <i class='fa fa-user'></i>
+        </a>
+      </li>
+      <li ng-class='{ active: isSet(2) }' ng-click='setTab(2)'>
+        <a ng-class='{ active: isSet(2) }'>
+          <i class='fa fa-users'></i>
+        </a>
+      </li>
+      <li ng-class='{ active: isSet(3) }' ng-click='setTab(3)'>
+        <a ng-class='{ active: isSet(3) }'>
+          <i class='fa fa-cog'></i>
+        </a>
+      </li>
+    </ul>
+    <slick ng-controller='randomUserController'>
+      <ul class='menu_list menu_list__stacked' ng-show='isSet(1)'>
+        <li ng-model='profile.picture'>
+          <div class='menu_list__stacked_img' style="background-image:url('{{profile.picture}}')">
+            <span class='menu_list__stacked_img__icon' ng-class="{'menu_list__stacked_img__icon_female' : profile.gender == 'female'}" ng-if="profile.gender == 'female'">
+              <i class='fa fa-female'></i>
+            </span>
+            <span class='menu_list__stacked_img__icon' ng-class="{'menu_list__stacked_img__icon_male' : profile.gender == 'male'}" ng-if="profile.gender == 'male'">
+              <i class='fa fa-male'></i>
+            </span>
+          </div>
+        </li>
+        <li>
+          {{profile.name}}, {{profile.dob | agefilter}}
+        </li>
+        <li class='occupation'>
+          {{profile.occupation}}
+          <ul class='profile_list'>
+            <li data-label='{{profile.skills.one}}' data-points='{{profile.skillpoints.one}}'></li>
+            <li data-label='{{profile.skills.two}}' data-points='{{profile.skillpoints.two}}'></li>
+            <li data-label='{{profile.skills.three}}' data-points='{{profile.skillpoints.three}}'></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class='menu_list menu_list__block' ng-show='isSet(2)'>
+        <li>
+          <div class='radio_group radio_group_transparent' data-label='Show all'>
+            <input id='gender_list' name='gender_list' ng-click='update()' ng-model='user.gender' type='radio' value=''>
+            <label for='gender_list'></label>
+          </div>
+          <div class='radio_group radio_group_transparent' data-label='Show men'>
+            <input id='male_list' name='gender_list' ng-click='update()' ng-model='user.gender' type='radio' value='male'>
+            <label for='male_list'></label>
+          </div>
+          <div class='radio_group radio_group_transparent' data-label='Show women'>
+            <input id='female_list' name='gender_list' ng-click='update()' ng-model='user.gender' type='radio' value='female'>
+            <label for='female_list'></label>
+          </div>
+        </li>
+      </ul>
+      <ul class='menu_list menu_list__block' ng-repeat='user in users' ng-show='isSet(2)'>
+        <li>
+          <span class='small-img' ng-if="user.gender == 'male'">
+            <img class='blue' ng-src='{{user.picture.large}}'>
+          </span>
+          <span class='small-img' ng-if="user.gender == 'female'">
+            <img class='pink' ng-src='{{user.picture.large}}'>
+          </span>
+          {{user.name.first}} {{user.name.last}}
+        </li>
+      </ul>
+      <ul class='menu_list menu_list__block' ng-show='isSet(3)'>
+        <li>
+          <div class='switch_group switch_group_transparent' data-label='Anyone can add me'>
+            <input checked='checked' id='set_1' name='settings' type='checkbox'>
+            <label for='set_1'></label>
+          </div>
+        </li>
+        <li>
+          <div class='switch_group switch_group_transparent' data-label='Anyone can message me'>
+            <input checked='checked' id='set_2' name='settings' type='checkbox'>
+            <label for='set_2'></label>
+          </div>
+        </li>
+        <li>
+          <div class='switch_group switch_group_transparent' data-label='Get notifications'>
+            <input checked='checked' id='set_3' name='settings' type='checkbox'>
+            <label for='set_3'></label>
+          </div>
+        </li>
+        <li>
+          <div class='switch_group switch_group_transparent' data-label='Send e-mail to me when someone added me'>
+            <input id='set_4' name='settings' type='checkbox'>
+            <label for='set_4'></label>
+          </div>
+        </li>
+      </ul>
+    </slick>
+  </aside>
+</body>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js'></script>
+
+  
+
+    <script  src="js/index.js"></script>
+
+
+
+
+</body>
+
+</html>

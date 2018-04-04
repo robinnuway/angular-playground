@@ -1,0 +1,259 @@
+%body{"ng-app" => "app", "ng-controller" => "toggleMenuController"}
+	%aside{:class => "modal", "ng-class" => "{'active': isModalOpen}"}
+		%div{:class => "modal_content"}
+			%ul{:class => "modal_content__close", "ng-click" => "closeModal()"}
+				%li
+			%div{:class => "modal_content__inner"}
+	%div{:class => "loader"}
+		%div{:class => "loader_circle"}
+	%div{:class => "site-inner", "ng-class" => "{'slide' : isActive}", "ng-click" => "closeMenu()"}
+		%section{:class => "hero"}
+			%header{:class => "hero_inner container"}
+				%form{:class => "input-form", :name => "form", "ng-controller" => "randomUserController", "ng-model-options" => "{updateOn: 'blur', '*': '$inherit'}", :novalidate => "novalidate"}
+					%div{:class => "flex-row", "ng-controller" => "tabsController"}
+						%div{:class => "item-md-3 item-sm-8 item-xs-12", "ng-show" => "isSet(1)"}
+							%span Login
+							%div{:class => "input-group"}
+								%input{:class => "input-group_field", :id => "loginemail", "ng-model" => "user.email", "ng-model-options" => "{updateOn: 'default blur'}", :type => "email", :name => "name", :required => "required"}
+								%label{:for => "loginemail", :class => "input-group_label"} E-mail
+								%div{:class => "input-group_error", "ng-show" => "form.$submitted || form.email.$touched"}
+									%span{"ng-show" => "form.email.$error.required"} Please, type in your email
+									%span{"ng-show" => "form.email.$error.email"} Not a valid email address
+							%div{:class => "input-group"}
+								%input{:class => "input-group_field", :id => "loginpassword", "ng-model" => "user.password", "ng-model-options" => "{updateOn: 'default blur'}", :type => "password", :name => "name", :required => "required"}
+								%label{:for => "loginpassword", :class => "input-group_label"} Password
+								%div{:class => "input-group_error", "ng-show" => "form.$submitted || form.password.$touched"}
+									%span{"ng-show" => "form.password.$error.required"} Please, type in your password
+							%button{:type => "submit", :class => "button"} Login
+							%a{:href => "#", :class => "float-right", "ng-click" => "setTab(2)", "ng-class" => "{ active: isSet(2) }"} Not a member?
+						%div{:class => "item-md-3 item-sm-8 item-xs-12", "ng-show" => "isSet(2)"}
+							%span Sign up
+							%div{:class => "input-group"}
+								%input{:class => "input-group_field", :id => "name", "ng-model" => "user.name", "ng-model-options" => "{updateOn: 'default blur'}", :type => "text", :name => "name", :required => "required"}
+								%label{:for => "name", :class => "input-group_label"} First- & lastname
+								%div{:class => "input-group_error", "ng-show" => "form.$submitted || form.name.$touched"}
+									%span{"ng-show" => "form.name.$error.required"} Please, fill in your names
+							%div{:class => "input-group"}
+								%input{:class => "input-group_field", :id => "email", :type => "email", :required => "required", "ng-model" => "user.email", "ng-model-options" => "{updateOn: 'default blur'}", :name => "email", :required => "required"}
+								%label{:for => "email", :class => "input-group_label"} E-mail
+								%div{:class => "input-group_error", "ng-show" => "form.$submitted || form.email.$touched"}
+									%span{"ng-show" => "form.email.$error.required"} Please, fill in your email
+									%span{"ng-show" => "form.email.$error.email"} Not a valid email address
+							%div{:class => "input-group"}
+								%input{:class => "input-group_field", :id => "password", :type => "password", :required => "required", "ng-model" => "user.password", "ng-minlength" => "8", "ng-model-options" => "{updateOn: 'default blur'}", :name => "password", :required => "required"}
+								%label{:for => "password", :class => "input-group_label"} Password
+								%div{:class => "input-group_error", "ng-show" => "form.$submitted || form.password.$touched"}
+									%span{"ng-show" => "form.password.$error.required"} Please, choose a password
+									%span{"ng-show" => "form.password.$error.minlength"} Password is too short
+							%div{:class => "switch_group switch_group_transparent", "data-label" => "Accept terms"}
+								%input{:type => "checkbox", :id => "acceptterms", :name => "terms", "ng-model" => "user.terms", :required => "required"}
+								%label{:for => "acceptterms", "ng-checked" => "user.terms"}
+							%div{:class => "input-group"}
+								%div{:class => "input-group_error", "ng-show" => "form.$submitted || forms.terms.$touched", "ng-class" => "{'ng-hide' : user.terms == true}"}
+									%span{"ng-show" => "form.terms.$error.required"} Please, accept our terms
+							%button{:type => "submit", "ng-click" => "update(user)", :class => "button", "ng-class" => "{'button_pink' : form.$invalid}"}
+								%i{:class => "fa fa-close", "ng-if" => "form.$invalid"}
+								%i{:class => "fa fa-check", "ng-if" => "form.$valid"}
+								Sign up
+							%a{:href => "#", :class => "float-right", "ng-click" => "setTab(1)", "ng-class" => "{ active: isSet(1) }"} Already a member?
+			-# %svg{:class => "hero_decoration", :height => "100px", :preserveaspectratio => "none", :version => "1.1", :viewbox => "0 0 100 100", :width => "100%", :xmlns => "http://www.w3.org/2000/svg"}
+				%path{:d => "M100 0 L100 100 L0 100", "stroke-width" => "0"}
+		%section{:class => "container air", "ng-controller" => "randomUserController"}
+			%div{:class => "layer"}
+				%div{:class => "flex-row air-top"}
+					%div{:class => "item-md-6 item-sm-12 item-xs-12"}
+						%div{:class => "slider_tooltip slider_tooltip__reversed"}
+							{{range.min}} - {{range.max}} age
+						%slider{"config" => "config", "min" => "range.min", "max" => "range.max", :class => "slider slider_reversed", "step" => "step"}
+				%div{:class => "flex-row air-top"}
+					%div{:class => "item-md-6 item-sm-12 item-xs-12"}
+						%div{:class => "accordion", "ng-controller" => "accordionController", "ng-class" => "{'active' : isActive}"}
+							%header{:class => "accordion_header", "ng-click" => "accordionActive()"} Gender {{user.gender}}
+							%div{:class => "accordion_body", "ng-class" => "{'active' : isActive}"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "All genders"}
+									%input{:type => "radio", :id => "gender", :name => "gender", "ng-model" => "user.gender", :value => "", "ng-click" => "update()"}
+									%label{:for => "gender"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "Men"}
+									%input{:type => "radio", :id => "male", :name => "gender", "ng-model" => "user.gender", :value => "male", "ng-click" => "update()"}
+									%label{:for => "male"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "Women"}
+									%input{:type => "radio", :id => "female", :name => "gender", "ng-model" => "user.gender", :value => "female", "ng-click" => "update()"}
+									%label{:for => "female"}
+					%div{:class => "item-md-6 item-sm-12 item-xs-12"}
+						%div{:class => "accordion", "ng-controller" => "accordionController", "ng-class" => "{'active' : isActive}"}
+							%header{:class => "accordion_header", "ng-click" => "accordionActive()"} Nationality {{user.nat}}
+							%div{:class => "accordion_body", "ng-class" => "{'active' : isActive}"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "All nations"}
+									%input{:type => "radio", :id => "nat", :name => "nat", "ng-model" => "user.nat", :value => "", "ng-click" => "update()"}
+									%label{:for => "nat"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "United States"}
+									%input{:type => "radio", :id => "us", :name => "nat", "ng-model" => "user.nat", :value => "us", "ng-click" => "update()"}
+									%label{:for => "us"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "Great Britain"}
+									%input{:type => "radio", :id => "gb", :name => "nat", "ng-model" => "user.nat", :value => "gb", "ng-click" => "update()"}
+									%label{:for => "gb"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "Denmark"}
+									%input{:type => "radio", :id => "dk", :name => "nat", "ng-model" => "user.nat", :value => "dk", "ng-click" => "update()"}
+									%label{:for => "dk"}
+								%div{:class => "radio_group radio_group_transparent", "data-label" => "Finland"}
+									%input{:type => "radio", :id => "fi", :name => "nat", "ng-model" => "user.nat", :value => "fi", "ng-click" => "update()"}
+									%label{:for => "fi"}
+				%div{:class => "flex-row", "ng-repeat" => "user in users", "ng-if" => "$index % 4 == 0"}
+					%div{:class => "item-md-3 item-sm-12 item-xs-12"}
+						%div{:class => "user-card", :style => "background-image:url('{{users[$index].picture.large}}')"}
+							%div{:class => "user-card_img", :style => "background-image:url('{{users[$index].picture.large}}')"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index].gender == 'male'", "ng-class" => "{'user-card_img__icon_male' : users[$index].gender == 'male'}"}
+									%i{:class => "fa fa-male"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index].gender == 'female'", "ng-class" => "{'user-card_img__icon_female' : users[$index].gender == 'female'}"}
+									%i{:class => "fa fa-female"}
+							%header{:class => "user-card_header"}
+								{{users[$index].name.first}} {{users[$index].name.last}}
+							%ul{:class => "user-card_desc"}
+								%li{"data-user-card-desc" => "Nationality"}
+									{{users[$index].nat}}
+								%li{"data-user-card-desc" => "City"} {{users[$index].location.city}}
+								%li{"data-user-card-desc" => "Age"}
+									{{users[$index].dob | agefilter}}
+									{{user.civilstatus}}
+							%div{:class => "user-card_bottom"}
+								%div{:class => "flex-row"}
+									%div{:class => "item-md-12 item-sm-12 item-xs-12"}
+										%button{:class => "button", "ng-class" => "{'active' : isModalOpen}", "ng-click" => "modalActive()"} 
+											Say hello
+											%i{:class => "fa fa-heart"}
+					%div{:class => "item-md-3 item-sm-12 item-xs-12"}
+						%div{:class => "user-card", :style => "background-image:url('{{users[$index + 1].picture.large}}')"}
+							%div{:class => "user-card_img", :style => "background-image:url('{{users[$index + 1].picture.large}}')"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index + 1].gender == 'male'", "ng-class" => "{'user-card_img__icon_male' : users[$index + 1].gender == 'male'}"}
+									%i{:class => "fa fa-male"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index + 1].gender == 'female'", "ng-class" => "{'user-card_img__icon_female' : users[$index + 1].gender == 'female'}"}
+									%i{:class => "fa fa-female"}
+							%header{:class => "user-card_header"}
+								{{users[$index + 1].name.first}} {{users[$index + 1].name.last}}
+							%ul{:class => "user-card_desc"}
+								%li{"data-user-card-desc" => "Nationality"}
+									{{users[$index + 1].nat}}
+								%li{"data-user-card-desc" => "City"} {{users[$index + 1].location.city}}
+								%li{"data-user-card-desc" => "Age"}
+									{{users[$index + 1].dob | agefilter}}
+									{{user.civilstatus}}
+							%div{:class => "user-card_bottom"}
+								%div{:class => "flex-row"}
+									%div{:class => "item-md-12 item-sm-12 item-xs-12"}
+										%button{:class => "button", "ng-class" => "{'active' : isModalOpen}", "ng-click" => "modalActive()"} 
+											Say hello
+											%i{:class => "fa fa-heart"}
+					%div{:class => "item-md-3 item-sm-12 item-xs-12"}
+						%div{:class => "user-card", :style => "background-image:url('{{users[$index + 2].picture.large}}')"}
+							%div{:class => "user-card_img", :style => "background-image:url('{{users[$index + 2].picture.large}}')"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index + 2].gender == 'male'", "ng-class" => "{'user-card_img__icon_male' : users[$index + 2].gender == 'male'}"}
+									%i{:class => "fa fa-male"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index + 2].gender == 'female'", "ng-class" => "{'user-card_img__icon_female' : users[$index + 2].gender == 'female'}"}
+									%i{:class => "fa fa-female"}
+							%header{:class => "user-card_header"}
+								{{users[$index + 2].name.first}} {{users[$index + 2].name.last}}
+							%ul{:class => "user-card_desc"}
+								%li{"data-user-card-desc" => "Nationality"}
+									{{users[$index + 2].nat}}
+								%li{"data-user-card-desc" => "City"} {{users[$index + 2].location.city}}
+								%li{"data-user-card-desc" => "Age"}
+									{{users[$index + 2].dob | agefilter}}
+									{{user.civilstatus}}
+							%div{:class => "user-card_bottom"}
+								%div{:class => "flex-row"}
+									%div{:class => "item-md-12 item-sm-12 item-xs-12"}
+										%button{:class => "button", "ng-class" => "{'active' : isModalOpen}", "ng-click" => "modalActive()"} 
+											Say hello
+											%i{:class => "fa fa-heart"}
+					%div{:class => "item-md-3 item-sm-12 item-xs-12"}
+						%div{:class => "user-card", :style => "background-image:url('{{users[$index + 3].picture.large}}')"}
+							%div{:class => "user-card_img", :style => "background-image:url('{{users[$index + 3].picture.large}}')"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index + 3].gender == 'male'", "ng-class" => "{'user-card_img__icon_male' : users[$index + 3].gender == 'male'}"}
+									%i{:class => "fa fa-male"}
+								%span{:class => "user-card_img__icon", "ng-if" => "users[$index + 3].gender == 'female'", "ng-class" => "{'user-card_img__icon_female' : users[$index + 3].gender == 'female'}"}
+									%i{:class => "fa fa-female"}
+							%header{:class => "user-card_header"}
+								{{users[$index + 3].name.first}} {{users[$index + 3].name.last}}
+							%ul{:class => "user-card_desc"}
+								%li{"data-user-card-desc" => "Nationality"}
+									{{users[$index + 3].nat}}
+								%li{"data-user-card-desc" => "City"} {{users[$index + 3].location.city}}
+								%li{"data-user-card-desc" => "Age"}
+									{{users[$index + 3].dob | agefilter}}
+									{{user.civilstatus}}
+							%div{:class => "user-card_bottom"}
+								%div{:class => "flex-row"}
+									%div{:class => "item-md-12 item-sm-12 item-xs-12"}
+										%button{:class => "button", "ng-class" => "{'active' : isModalOpen}", "ng-click" => "modalActive()"} 
+											Say hello
+											%i{:class => "fa fa-heart"}
+				%div{:class => "flex-row"}
+					%div{:class => "item-md-4 item-md-offset-4 item-sm-6 item-sm-offset-3 item-xs-12"}
+						%button{:class => "button", "ng-click" => "loadMore(users[$index])"}
+							%i{:class => "fa fa-random"}
+	%nav{:class => "navigation", "ng-class" => "{'scroll': toggleClass}", :scroll => true}
+		%ul{:class => "navigation_list", "ng-click" => "menuActive()", "ng-class" => "{'active': isActive}"}
+			%li
+		%div{:class => "navigation_logotype"} meet
+	%aside{:class => "menu", "ng-class" => "{'active': isActive}", "ng-controller" => "tabsController"}
+		%ul{:class => "menu_list"}
+			%li{"ng-click" => "setTab(1)", "ng-class" => "{ active: isSet(1) }"}
+				%a{"ng-class" => "{ active: isSet(1) }"}
+					%i{:class => "fa fa-user"}
+			%li{"ng-click" => "setTab(2)", "ng-class" => "{ active: isSet(2) }"}
+				%a{"ng-class" => "{ active: isSet(2) }"}
+					%i{:class => "fa fa-users"}
+			%li{"ng-click" => "setTab(3)", "ng-class" => "{ active: isSet(3) }"}
+				%a{"ng-class" => "{ active: isSet(3) }"}
+					%i{:class => "fa fa-cog"}
+		%slick{"ng-controller" => "randomUserController"}
+			%ul{:class => "menu_list menu_list__stacked", "ng-show" => "isSet(1)"}
+				%li{"ng-model" => "profile.picture"}
+					%div{:class => "menu_list__stacked_img", :style => "background-image:url('{{profile.picture}}')"}
+						%span{:class => "menu_list__stacked_img__icon", "ng-if" => "profile.gender == 'female'", "ng-class" => "{'menu_list__stacked_img__icon_female' : profile.gender == 'female'}"}
+							%i{:class => "fa fa-female"}
+						%span{:class => "menu_list__stacked_img__icon", "ng-if" => "profile.gender == 'male'", "ng-class" => "{'menu_list__stacked_img__icon_male' : profile.gender == 'male'}"}
+							%i{:class => "fa fa-male"}
+				%li
+					{{profile.name}}, {{profile.dob | agefilter}}
+				%li{:class => "occupation"}
+					{{profile.occupation}}
+					%ul{:class => "profile_list"}
+						%li{"data-label" => "{{profile.skills.one}}", "data-points" => "{{profile.skillpoints.one}}"}
+						%li{"data-label" => "{{profile.skills.two}}", "data-points" => "{{profile.skillpoints.two}}"}
+						%li{"data-label" => "{{profile.skills.three}}", "data-points" => "{{profile.skillpoints.three}}"}
+			%ul{:class => "menu_list menu_list__block", "ng-show" => "isSet(2)"}
+				%li
+					%div{:class => "radio_group radio_group_transparent", "data-label" => "Show all"}
+						%input{:type => "radio", :id => "gender_list", :name => "gender_list", "ng-model" => "user.gender", :value => "", "ng-click" => "update()"}
+						%label{:for => "gender_list"}
+					%div{:class => "radio_group radio_group_transparent", "data-label" => "Show men"}
+						%input{:type => "radio", :id => "male_list", :name => "gender_list", "ng-model" => "user.gender", :value => "male", "ng-click" => "update()"}
+						%label{:for => "male_list"}
+					%div{:class => "radio_group radio_group_transparent", "data-label" => "Show women"}
+						%input{:type => "radio", :id => "female_list", :name => "gender_list", "ng-model" => "user.gender", :value => "female", "ng-click" => "update()"}
+						%label{:for => "female_list"}
+			%ul{:class => "menu_list menu_list__block", "ng-show" => "isSet(2)", "ng-repeat" => "user in users"}
+				%li
+					%span{:class => "small-img", "ng-if" => "user.gender == 'male'"}
+						%img{:class => "blue", "ng-src" => "{{user.picture.large}}"}
+					%span{:class => "small-img", "ng-if" => "user.gender == 'female'"}
+						%img{:class => "pink", "ng-src" => "{{user.picture.large}}"}
+					{{user.name.first}} {{user.name.last}}
+			%ul{:class => "menu_list menu_list__block", "ng-show" => "isSet(3)"}
+				%li
+					%div{:class => "switch_group switch_group_transparent", "data-label" => "Anyone can add me"}
+						%input{:type => "checkbox", :name => "settings", :id => "set_1", :checked => "checked"}
+						%label{:for => "set_1"}
+				%li
+					%div{:class => "switch_group switch_group_transparent", "data-label" => "Anyone can message me"}
+						%input{:type => "checkbox", :name => "settings", :id => "set_2", :checked => "checked"}
+						%label{:for => "set_2"}
+				%li
+					%div{:class => "switch_group switch_group_transparent", "data-label" => "Get notifications"}
+						%input{:type => "checkbox", :name => "settings", :id => "set_3", :checked => "checked"}
+						%label{:for => "set_3"}
+				%li
+					%div{:class => "switch_group switch_group_transparent", "data-label" => "Send e-mail to me when someone added me"}
+						%input{:type => "checkbox", :name => "settings", :id => "set_4"}
+						%label{:for => "set_4"}
